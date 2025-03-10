@@ -1,10 +1,32 @@
 const Recipe = require('../models/Recipe')
-exports.removeRecipe=async(reqj,res)=>{
-  const  RecipeId  = req.params._id;
+exports.updateRecipe=async(req,res)=>{
+  const { name } = req.params;
+  const {  category } = req.body;
+
+  try {
+    const updateRecipe= await User.findOneAndUpdate(
+      { name: name }, // עדכון לפי שדה userId
+      { category:category},
+      
+    );
+
+    if (!updateRecipe) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(updateRecipe);
+  } catch (error) {
+    console.error('Failed to update user:', error);
+    res.status(500).json({ message: 'Failed to update user' });
+  }
+};
+
+exports.removeRecipe=async(req,res)=>{
+  const  RecipeId  = req.params.name;
   console.log(RecipeId);
     try {
-      const deleteRecipe = await Recipe.findOneAndDelete({ id: _id });
-      if (!deletedUser) {
+      const deleteRecipe = await Recipe.findOneAndDelete({ name: RecipeId});
+      if (!deleteRecipe) {
         return res.status(404).json({ message: 'User not found' });
       }
       res.json({ message: 'User deleted successfully' });
@@ -13,7 +35,7 @@ exports.removeRecipe=async(reqj,res)=>{
       res.status(500).json({ message: 'Failed to delete user' });
     }
 };
-exports.updateRecipe=async(reqj,res)=>{};
+
 
 exports.getAllRecpies = async (req, res) => {
   try {
@@ -29,7 +51,5 @@ exports.addRecipe = async(req,res)=>{
   res.json(recipe)
 };
 
-exports.deleteRecipe= async (req, res) => {
 
-};
 

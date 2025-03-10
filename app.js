@@ -8,7 +8,9 @@ const connectDB = require("./config/dbConn")
 const PORT = process.env.PORT || 7001
 const app = express()
 connectDB()
-//middlewares
+const recipeRoutes=require('./ruters/recipeRoutes');
+app.use('/',recipeRoutes)
+//middleware
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.static("public"))
